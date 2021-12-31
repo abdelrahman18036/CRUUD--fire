@@ -1105,7 +1105,6 @@ $(function () {
         win.document.write('<html><head><title>' + pageTitle + '</title>' +
             '<link rel="stylesheet" href="' + stylesheet + '">' +
             '</head><body>' + $('.table')[0].outerHTML + '</body></html>');
-        win.document.close();
         win.print();
         return false;
     });
