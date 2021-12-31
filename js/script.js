@@ -46,15 +46,29 @@ const displayEmployees = async (doc) => {
 									<label for="${doc.id}"></label>
 							</span>
 					</td>
+                    <td class="employee-id">${employee.id}</td>
 					<td class="employee-name">${employee.name}</td>
 					<td class="employee-email">${employee.email}</td>
 					<td class="employee-address">${employee.address}</td>
 					<td class="employee-phone">${employee.phone}</td>
+                    <td class="employee-governorate">${employee.governorate}</td>
+                    <td class="employee-sex">${employee.sex}</td>
+                    <td class="employee-age">${employee.age}</td>
+                    <td class="employee-location">${employee.location}</td>
+                    <td class="employee-regiment">${employee.regiment}</td>
+                    <td class="employee-busnum">${employee.busnum}</td>
+                    <td class="employee-seatnum">${employee.seatnum}</td>
+                    <td class="employee-code">${employee.code}</td>
+                    <td class="employee-hotel">${employee.hotel}</td>
+                    <td class="employee-room">${employee.room}</td>
 					<td>
+                    <a href="#" id="${doc.id}" class="view js-view-employee"><i class="material-icons" data-toggle="tooltip" title="view">pageview</i>
+                    </a>
 							<a href="#" id="${doc.id}" class="edit js-edit-employee"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
 							</a>
 							<a href="#" id="${doc.id}" class="delete js-delete-employee"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
 							</a>
+                            
 					</td>
 			</tr>`;
 
@@ -636,14 +650,40 @@ $(document).ready(function () {
     // ADD EMPLOYEE
     $("#add-employee-form").submit(function (event) {
         event.preventDefault();
+        let employeeID = $('#employee-id').val();
         let employeeName = $('#employee-name').val();
         let employeeEmail = $('#employee-email').val();
         let employeeAddress = $('#employee-address').val();
         let employeePhone = $('#employee-phone').val();
+        let employeegovernorate = $('#employee-governorate').val();
+        let employeeSex = $('#employee-sex').val();
+        let employeeAge = $('#employee-age').val();
+        let employeeLocation = $('#employee-location').val();
+        let employeeRegiment = $('#employee-regiment').val();
+        let employeeBusnum = $('#employee-busnum').val();
+        let employeeSeatnum = $('#employee-seatnum').val();
+        let employeeCode = $('#employee-code').val();
+        let employeeHotel = $('#employee-hotel').val();
+        let employeeRoom = $('#employee-room').val();
         db
             .collection('employees')
             .add({
-                name: employeeName, email: employeeEmail, address: employeeAddress, phone: employeePhone, createdAt: firebase
+                id: employeeID,
+                name: employeeName,
+                email: employeeEmail,
+                address: employeeAddress,
+                phone: employeePhone,
+                governorate: employeegovernorate,
+                sex: employeeSex,
+                age: employeeAge,
+                location: employeeLocation,
+                regiment: employeeRegiment,
+                busnum: employeeBusnum,
+                seatnum: employeeSeatnum,
+                code: employeeCode,
+                hotel: employeeHotel,
+                room: employeeRoom,
+                createdAt: firebase
                     .firestore
                     .FieldValue
                     .serverTimestamp()
@@ -659,11 +699,24 @@ $(document).ready(function () {
 										<label for="${docRef.id}"></label>
 								</span>
 						</td>
-						<td class="employee-name">${employeeName}</td>
-						<td class="employee-email">${employeeEmail}</td>
-						<td class="employee-address">${employeeAddress}</td>
-						<td class="employee-phone">${employeePhone}</td>
+						<td class="employee-id">${employeeID}</td>
+                        <td class="employee-name">${employeeName}</td>
+                        <td class="employee-email">${employeeEmail}</td>
+                        <td class="employee-address">${employeeAddress}</td>
+                        <td class="employee-phone">${employeePhone}</td>
+                        <td class="employee-governorate">${employeegovernorate}</td>
+                        <td class="employee-sex">${employeeSex}</td>
+                        <td class="employee-age">${employeeAge}</td>
+                        <td class="employee-location">${employeeLocation}</td>
+                        <td class="employee-regiment">${employeeRegiment}</td>
+                        <td class="employee-busnum">${employeeBusnum}</td>
+                        <td class="employee-seatnum">${employeeSeatnum}</td>
+                        <td class="employee-code">${employeeCode}</td>
+                        <td class="employee-hotel">${employeeHotel}</td>
+                        <td class="employee-room">${employeeRoom}</td>
 						<td>
+                             <a href="#" id="${docRef.id}" class="view js-view-employee"><i class="material-icons" data-toggle="tooltip" title="view">pageview</i>
+							    </a>
 								<a href="#" id="${docRef.id}" class="edit js-edit-employee"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
 								</a>
 								<a href="#" id="${docRef.id}" class="delete js-delete-employee"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
@@ -678,6 +731,107 @@ $(document).ready(function () {
             });
     });
 
+    // view EMployee
+
+    $(document).on('click', '.js-view-employee', function (e) {
+        e.preventDefault();
+        let id = $(this).attr('id');
+        $('#view-employee-form').attr('edit-id', id);
+        db
+            .collection('employees')
+            .doc(id)
+            .get()
+            .then(function (document) {
+                if (document.exists) {
+                    $('#view-employee-form #employee-id').val(document.data().id);
+                    $('#view-employee-form #employee-name').val(document.data().name);
+                    $('#view-employee-form #employee-email').val(document.data().email);
+                    $('#view-employee-form #employee-address').val(document.data().address);
+                    $('#view-employee-form #employee-phone').val(document.data().phone);
+                    $('#view-employee-form #employee-governorate').val(document.data().governorate);
+                    $('#view-employee-form #employee-sex').val(document.data().sex);
+                    $('#view-employee-form #employee-age').val(document.data().age);
+                    $('#view-employee-form #employee-location').val(document.data().location);
+                    $('#view-employee-form #employee-regiment').val(document.data().regiment);
+                    $('#view-employee-form #employee-busnum').val(document.data().busnum);
+                    $('#view-employee-form #employee-seatnum').val(document.data().seatnum);
+                    $('#view-employee-form #employee-code').val(document.data().code);
+                    $('#view-employee-form #employee-hotel').val(document.data().hotel);
+                    $('#view-employee-form #employee-room').val(document.data().room);
+                    $('#viewEmployeeModal').modal('show');
+                } else {
+                    console.log("No such document!");
+                }
+            })
+            .catch(function (error) {
+                console.log("Error getting document:", error);
+            });
+    });
+
+    $("#view-employee-form").submit(function (event) {
+        event.preventDefault();
+        let id = $(this).attr('edit-id');
+
+        let employeeID = $('#employee-id').val();
+        let employeeName = $('#employee-name').val();
+        let employeeEmail = $('#employee-email').val();
+        let employeeAddress = $('#employee-address').val();
+        let employeePhone = $('#employee-phone').val();
+        let employeegovernorate = $('#employee.governorate').val();
+        let employeeSex = $('#employee.sex').val();
+        let employeeAge = $('#employee.age').val();
+        let employeeLocation = $('#employee.location').val();
+        let employeeRegiment = $('#employee.regiment').val();
+        let employeeBusnum = $('#employee.busnum').val();
+        let employeeSeatnum = $('#employee.seatnum').val();
+        let employeeCode = $('#employee.code').val();
+        let employeeHotel = $('#employee.hotel').val();
+        let employeeRoom = $('#employee.room').val();
+
+        db
+            .collection('employees')
+            .doc(id)
+            .update({
+                id: employeeID,
+                name: employeeName,
+                email: employeeEmail,
+                address: employeeAddress,
+                phone: employeePhone,
+                governorate: employeegovernorate,
+                sex: employeeSex,
+                age: employeeAge,
+                location: employeeLocation,
+                regiment: employeeRegiment,
+                busnum: employeeBusnum,
+                seatnum: employeeSeatnum,
+                code: employeeCode,
+                hotel: employeeHotel,
+                room: employeeRoom,
+                updatedAt: firebase
+                    .firestore
+                    .FieldValue
+                    .serverTimestamp()
+            });
+
+        $('#viewEmployeeModal').modal('hide');
+
+        // SHOW UPDATED DATA ON BROWSER
+        $('tr[data-id=' + id + '] td.employee-id').html(employeeID);
+        $('tr[data-id=' + id + '] td.employee-name').html(employeeName);
+        $('tr[data-id=' + id + '] td.employee-email').html(employeeEmail);
+        $('tr[data-id=' + id + '] td.employee-address').html(employeeAddress);
+        $('tr[data-id=' + id + '] td.employee-phone').html(employeePhone);
+        $('tr[data-id=' + id + '] td.employee-governorate').html(employeegovernorate);
+        $('tr[data-id=' + id + '] td.employee-sex').html(employeeSex);
+        $('tr[data-id=' + id + '] td.employee-age').html(employeeAge);
+        $('tr[data-id=' + id + '] td.employee-location').html(employeeLocation);
+        $('tr[data-id=' + id + '] td.employee-regiment').html(employeeRegiment);
+        $('tr[data-id=' + id + '] td.employee-busnum').html(employeeBusnum);
+        $('tr[data-id=' + id + '] td.employee-code').html(employeeCode);
+        $('tr[data-id=' + id + '] td.employee-hotel').html(employeeHotel);
+        $('tr[data-id=' + id + '] td.employee-room').html(employeeRoom);
+    });
+
     // UPDATE EMPLOYEE
     $(document).on('click', '.js-edit-employee', function (e) {
         e.preventDefault();
@@ -689,10 +843,21 @@ $(document).ready(function () {
             .get()
             .then(function (document) {
                 if (document.exists) {
+                    $('#edit-employee-form #employee-id').val(document.data().id);
                     $('#edit-employee-form #employee-name').val(document.data().name);
                     $('#edit-employee-form #employee-email').val(document.data().email);
                     $('#edit-employee-form #employee-address').val(document.data().address);
                     $('#edit-employee-form #employee-phone').val(document.data().phone);
+                    $('#edit-employee-form #employee-governorate').val(document.data().governorate);
+                    $('#edit-employee-form #employee-sex').val(document.data().sex);
+                    $('#edit-employee-form #employee-age').val(document.data().age);
+                    $('#edit-employee-form #employee-location').val(document.data().location);
+                    $('#edit-employee-form #employee-regiment').val(document.data().regiment);
+                    $('#edit-employee-form #employee-busnum').val(document.data().busnum);
+                    $('#edit-employee-form #employee-seatnum').val(document.data().seatnum);
+                    $('#edit-employee-form #employee-code').val(document.data().code);
+                    $('#edit-employee-form #employee-hotel').val(document.data().hotel);
+                    $('#edit-employee-form #employee-room').val(document.data().room);
                     $('#editEmployeeModal').modal('show');
                 } else {
                     console.log("No such document!");
@@ -706,16 +871,41 @@ $(document).ready(function () {
     $("#edit-employee-form").submit(function (event) {
         event.preventDefault();
         let id = $(this).attr('edit-id');
+        let employeeID = $('#edit-employee-form #employee-id').val();
         let employeeName = $('#edit-employee-form #employee-name').val();
         let employeeEmail = $('#edit-employee-form #employee-email').val();
         let employeeAddress = $('#edit-employee-form #employee-address').val();
         let employeePhone = $('#edit-employee-form  #employee-phone').val();
-
+        let employeegovernorate = $('#edit-employee-form #employee-governorate').val();
+        let employeeSex = $('#edit-employee-form #employee-sex').val();
+        let employeeAge = $('#edit-employee-form #employee-age').val();
+        let employeeLocation = $('#edit-employee-form #employee-location').val();
+        let employeeRegiment = $('#edit-employee-form #employee-regiment').val();
+        let employeeBusnum = $('#edit-employee-form #employee-busnum').val();
+        let employeeSeatnum = $('#edit-employee-form #employee-seatnum').val();
+        let employeeCode = $('#edit-employee-form #employee-code').val();
+        let employeeHotel = $('#edit-employee-form #employee-hotel').val();
+        let employeeRoom = $('#edit-employee-form #employee-room').val();
         db
             .collection('employees')
             .doc(id)
             .update({
-                name: employeeName, email: employeeEmail, address: employeeAddress, phone: employeePhone, updatedAt: firebase
+                id: employeeID,
+                name: employeeName,
+                email: employeeEmail,
+                address: employeeAddress,
+                phone: employeePhone,
+                governorate: employeegovernorate,
+                sex: employeeSex,
+                age: employeeAge,
+                location: employeeLocation,
+                regiment: employeeRegiment,
+                busnum: employeeBusnum,
+                seatnum: employeeSeatnum,
+                code: employeeCode,
+                hotel: employeeHotel,
+                room: employeeRoom,
+                updatedAt: firebase
                     .firestore
                     .FieldValue
                     .serverTimestamp()
@@ -724,10 +914,20 @@ $(document).ready(function () {
         $('#editEmployeeModal').modal('hide');
 
         // SHOW UPDATED DATA ON BROWSER
+        $('tr[data-id=' + id + '] td.employee-id').html(employeeID);
         $('tr[data-id=' + id + '] td.employee-name').html(employeeName);
         $('tr[data-id=' + id + '] td.employee-email').html(employeeEmail);
         $('tr[data-id=' + id + '] td.employee-address').html(employeeAddress);
         $('tr[data-id=' + id + '] td.employee-phone').html(employeePhone);
+        $('tr[data-id=' + id + '] td.employee-governorate').html(employeegovernorate);
+        $('tr[data-id=' + id + '] td.employee-sex').html(employeeSex);
+        $('tr[data-id=' + id + '] td.employee-age').html(employeeAge);
+        $('tr[data-id=' + id + '] td.employee-location').html(employeeLocation);
+        $('tr[data-id=' + id + '] td.employee-regiment').html(employeeRegiment);
+        $('tr[data-id=' + id + '] td.employee-busnum').html(employeeBusnum);
+        $('tr[data-id=' + id + '] td.employee-code').html(employeeCode);
+        $('tr[data-id=' + id + '] td.employee-hotel').html(employeeHotel);
+        $('tr[data-id=' + id + '] td.employee-room').html(employeeRoom);
     });
 
     // DELETE EMPLOYEE
@@ -772,23 +972,58 @@ $(document).ready(function () {
         }
     });
 
-    // SEARCH
-    $("#search-name").keyup(function () {
-        $('#employee-table tbody').html('');
-        let nameKeyword = $("#search-name").val();
-        employeeRef
-            .orderBy('name', 'asc')
-            .startAt(nameKeyword)
-            .endAt(nameKeyword + "\uf8ff")
-            .get()
-            .then(function (documentSnapshots) {
-                documentSnapshots
-                    .docs
-                    .forEach(doc => {
-                        renderEmployee(doc);
-                    });
-            });
-    });
+        // SEARCH
+        $("#search-name").click(function B(m) {
+            $('#employee-table tbody').html('');
+            let nameKeyword = $("#search").val();
+            let x = $('#select option:selected').val();
+            employeeRef
+                .orderBy(x, "asc")
+                .startAt(nameKeyword)
+                .endAt(nameKeyword + "\uf8ff")
+                .get()
+                .then((querySnapshot) => {
+                    querySnapshot
+                        .docs
+                        .forEach(doc => {
+                            const employee = doc.data();
+                            let item = `<tr data-id="${doc.id}">a
+                            <td>
+                                    <span class="custom-checkbox">
+                                            <input type="checkbox" id="${doc.id}" name="options[]" value="${doc.id}">
+                                            <label for="${doc.id}"></label>
+                                    </span>
+                            </td>
+                            <td class="employee-id">${employee.id}</td>
+                            <td class="employee-name">${employee.name}</td>
+                            <td class="employee-email">${employee.email}</td>
+                            <td class="employee-address">${employee.address}</td>
+                            <td class="employee-phone">${employee.phone}</td>
+                            <td class="employee-governorate">${employee.governorate}</td>
+                            <td class="employee-sex">${employee.sex}</td>
+                            <td class="employee-age">${employee.age}</td>
+                            <td class="employee-location">${employee.location}</td>
+                            <td class="employee-regiment">${employee.regiment}</td>
+                            <td class="employee-busnum">${employee.busnum}</td>
+                            <td class="employee-seatnum">${employee.seatnum}</td>
+                            <td class="employee-code">${employee.code}</td>
+                            <td class="employee-hotel">${employee.hotel}</td>
+                            <td class="employee-room">${employee.room}</td>
+                            <td>
+                            <a href="#" id="${doc.id}" class="view js-view-employee"><i class="material-icons" data-toggle="tooltip" title="view">pageview</i>
+                            </a>
+                                    <a href="#" id="${doc.id}" class="edit js-edit-employee"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i>
+                                    </a>
+                                    <a href="#" id="${doc.id}" class="delete js-delete-employee"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i>
+                                    </a>
+                                    
+                            </td>
+                    </tr>`;
+
+                            $('#employee-table').append(item);
+                        });
+                })
+        });
 
     // RESET FORMS
     $("#addEmployeeModal").on('hidden.bs.modal', function () {
@@ -823,3 +1058,23 @@ $(document).ready(function () {
         $('.modal:visible').each(centerModal);
     });
 }(jQuery));
+
+$('#refreshEmployeeModal').click(function () {
+    location.reload();
+});
+
+function hideLoader() {
+    $('#loading').hide();
+}
+
+$('.table-responsive').ready(hideLoader);
+
+$(".default_option").click(function () {
+    $(".dropdown ul").addClass("active");
+});
+
+$(".dropdown ul li").click(function () {
+    var text = $(this).text();
+    $(".default_option").text(text);
+    $(".dropdown ul").removeClass("active");
+});
