@@ -1078,3 +1078,35 @@ $(".dropdown ul li").click(function () {
     $(".default_option").text(text);
     $(".dropdown ul").removeClass("active");
 });
+
+
+$('#exportEmployeeModal').click(function(){
+    $("table").table2csv('output', {
+        appendTo: '#out'
+      });
+
+    $("table").table2csv({
+        separator: ',',
+        newline: '\n',
+        quoteFields: true,
+        excludeColumns: '',
+        excludeRows: '',
+        filename:'Explore Your Egypt.csv',
+        trimContent:true
+      });
+})
+
+
+$(function () {
+    $('#printEmployeeModal').click(function () {
+        var pageTitle = 'Page Title',
+            stylesheet = '//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css',
+            win = window.open('', 'Print', 'width=500,height=300');
+        win.document.write('<html><head><title>' + pageTitle + '</title>' +
+            '<link rel="stylesheet" href="' + stylesheet + '">' +
+            '</head><body>' + $('.table')[0].outerHTML + '</body></html>');
+        win.document.close();
+        win.print();
+        return false;
+    });
+});
